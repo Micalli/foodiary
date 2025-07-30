@@ -11,15 +11,12 @@ export default function Page() {
 
   return (
     <>
-      {user ? (
         <View className="flex-1 bg-white">
           <HomeHeader />
           <MealsList />
           <CreateMealBottonBar />
         </View>
-      ) : (
-        <LoadingScreen />
-      )}
+      
     </>
   );
 }

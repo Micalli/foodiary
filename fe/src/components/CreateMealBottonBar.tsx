@@ -1,17 +1,24 @@
-import { CameraIcon, MicIcon, SquarePen } from 'lucide-react-native';
+import { CameraIcon, MicIcon, SquarePen } from "lucide-react-native";
 import { View } from "react-native";
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Button } from './Button';
-import { useState } from 'react';
-import { AudioModal } from './AudioModal';
-import { CameraModal } from './CameraModal';
-import { WriteMealModal } from './WriteMealModal';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Button } from "./Button";
+import { useState } from "react";
+import { AudioModal } from "./AudioModal";
+import { CameraModal } from "./CameraModal";
+import { WriteMealModal } from "./WriteMealModal";
 
 export function CreateMealBottonBar() {
   const { bottom } = useSafeAreaInsets();
-const [isAudioModalOpen, setIsAudioModalOpen] = useState(false);
-const [isPictureModalOpen, setIsPictureModalOpen] = useState(false);
-const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
+  const [isAudioModalOpen, setIsAudioModalOpen] = useState(false);
+  const [isPictureModalOpen, setIsPictureModalOpen] = useState(false);
+  const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
+
+  function changeModalFunction() {
+    setIsPictureModalOpen(false);
+    setIsAudioModalOpen(false);
+
+    setIsWriteModalOpen(true);
+  }
 
   return (
     <View
@@ -44,11 +51,13 @@ const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
       </View>
 
       <AudioModal
+        changeModalFunction={changeModalFunction}
         open={isAudioModalOpen}
         onClose={() => setIsAudioModalOpen(false)}
       />
 
       <CameraModal
+        changeModalFunction={changeModalFunction}
         open={isPictureModalOpen}
         onClose={() => setIsPictureModalOpen(false)}
       />

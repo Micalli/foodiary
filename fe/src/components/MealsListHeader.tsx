@@ -1,14 +1,15 @@
-import { Text, View } from 'react-native';
-import { DailyStats } from './DailyStats';
-import { DateSwitcher } from './DateSwitcher';
-import { useAuth } from '../hooks/useAuth';
-import { useMemo } from 'react';
-import { Meals } from '../services/meals/get';
+import { ActivityIndicator, Text, View } from "react-native";
+import { DailyStats } from "./DailyStats";
+import { DateSwitcher } from "./DateSwitcher";
+import { useAuth } from "../hooks/useAuth";
+import { useMemo } from "react";
+import { Meals } from "../services/meals/get";
+import { colors } from "../styles/colors";
 
 interface IMealsListHeaderProps {
   currentDate: Date;
   meals: Meals[];
-  isLoading:boolean
+  isLoading: boolean;
   onPreviousDate(): void;
   onNextDate(): void;
 }
@@ -75,9 +76,12 @@ export function MealsListHeader({
       </View>
 
       <View className="h-px bg-gray-200 mt-7"></View>
-      <Text className="m-5 text-black-700 text-base font-sans-medium tracking-[1.28px]">
-        REFEIÇÕES
-      </Text>
+      <View className="flex-row">
+        <Text className="m-5 text-black-700 text-base font-sans-medium tracking-[1.28px]">
+          REFEIÇÕES
+        </Text>
+        {isLoading && <ActivityIndicator color={colors.black[700]} />}
+      </View>
     </>
   );
 }

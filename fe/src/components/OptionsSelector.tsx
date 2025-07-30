@@ -26,7 +26,7 @@ export function OptionsSelector({
     <TouchableOpacity
       key={option.value}
       className={cn(
-        "border border-gray-500 rounded-2xl py-3 px-4 flex-row gap-4 items-center mx-5",
+        "border border-gray-500 rounded-2xl py-3 px-4 flex-row gap-4 items-center mx-5 ",
         value === option.value && "bg-lime-700/10 border-lime-700"
       )}
       onPress={() => onChange?.(option.value)}
@@ -61,6 +61,7 @@ export function OptionsSelector({
       contentContainerStyle={{
         paddingBottom: 80 + bottom + 16,
       }}
+      className='mt-6'
       ItemSeparatorComponent={Separator}
       renderItem={renderItem}
       ListEmptyComponent={

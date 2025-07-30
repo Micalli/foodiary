@@ -95,7 +95,7 @@ functions:
 
   processMeal:
     handler: src/functions/processMeal.handler
-    timeout: 10 # 
+    timeout: 20 # 
     events:
       - sqs:
           arn: !GetAtt MealsQueue.Arn

@@ -29,13 +29,15 @@ import { Button } from "./Button";
 import { mealsService } from "../services/meals";
 import { useCreateMeal } from "../hooks/useCreateMeal";
 import { router } from "expo-router";
+import { LoadingScreen } from "./LoadingScreen";
 
 interface IAudioModalProps {
   open: boolean;
   onClose: () => void;
+  changeModalFunction: () => void;
 }
 
-export function AudioModal({ onClose, open }: IAudioModalProps) {
+export function AudioModal({ onClose, open, changeModalFunction}: IAudioModalProps) {
   const [audioUri, setAudioUri] = useState<null | string>(null);
 
   const audioRecorder = useAudioRecorder(RecordingPresets.HIGH_QUALITY);
@@ -49,7 +51,6 @@ export function AudioModal({ onClose, open }: IAudioModalProps) {
 
       handleCloseModal();
     },
-    
   });
 
   useEffect(() => {
@@ -157,49 +158,61 @@ export function AudioModal({ onClose, open }: IAudioModalProps) {
                 </Text>
               </View>
             )}
-            <TouchableOpacity className="">
-              <View className="my-10 flex-row justify-center text-center gap-2 ">
-                <Text className="text-white font-sans-light text-xs mt-  ">
-                  Não pode falar agora ?
-                </Text>
-                <Text className="text-lime-500 font-sans-light text-xs mt- text-center underline ">
-                  Escreva a refeição.
-                </Text>
-              </View>
-            </TouchableOpacity>
+
+            {!audioUri && (
+              <TouchableOpacity className="" onPress={changeModalFunction}>
+                <View className="my-10 flex-row justify-center text-center gap-2 ">
+                  <Text className="text-white font-sans-light text-xs mt-  ">
+                    Não pode falar agora ?
+                  </Text>
+                  <Text className="text-lime-500 font-sans-light text-xs mt- text-center underline ">
+                    Escreva a refeição.
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            )}
 
             {audioUri && (
-              <View className="p-5 pt-6 items-center pb-20 flex-row justify-center gap-8">
-                <Button size="icon" color="dark" onPress={handleDeleteAudio}>
-                  <Trash2Icon size={20} color={colors.gray[500]} />
-                </Button>
+              <View className="p-5 pt-6 items-center pb-20">
+                {isPending ? (
+                  <LoadingScreen 
+                    message="Processando refeição..." 
+                    showLogo={false}
+                  />
+                ) : (
+                  <View className="flex-row justify-center gap-8">
+                    <Button size="icon" color="dark" onPress={handleDeleteAudio}>
+                      <Trash2Icon size={20} color={colors.gray[500]} />
+                    </Button>
 
-                {!player.playing && (
-                  <Button
-                    size="icon"
-                    color="dark"
-                    onPress={() => player.play()}
-                  >
-                    <PlayIcon size={20} color={colors.lime[600]} />
-                  </Button>
-                )}
-                {player.playing && (
-                  <Button
-                    size="icon"
-                    color="dark"
-                    onPress={() => player.pause()}
-                  >
-                    <PauseIcon size={20} color={colors.lime[600]} />
-                  </Button>
-                )}
+                    {!player.playing && (
+                      <Button
+                        size="icon"
+                        color="dark"
+                        onPress={() => player.play()}
+                      >
+                        <PlayIcon size={20} color={colors.lime[600]} />
+                      </Button>
+                    )}
+                    {player.playing && (
+                      <Button
+                        size="icon"
+                        color="dark"
+                        onPress={() => player.pause()}
+                      >
+                        <PauseIcon size={20} color={colors.lime[600]} />
+                      </Button>
+                    )}
 
-                <Button
-                  size="icon"
-                  onPress={() => createMeal(audioUri)}
-                  loading={isPending}
-                >
-                  <CheckIcon size={20} color={colors.black[700]} />
-                </Button>
+                    <Button
+                      size="icon"
+                      onPress={() => createMeal(audioUri)}
+                      loading={isPending}
+                    >
+                      <CheckIcon size={20} color={colors.black[700]} />
+                    </Button>
+                  </View>
+                )}
               </View>
             )}
           </SafeAreaView>
